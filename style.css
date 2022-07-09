@@ -1,0 +1,11 @@
+.bg-pfp {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/_Infatuation.png');
+}
+
+li {
+    margin-bottom: 10px;
+}
+  
+li:last-child {
+    margin-bottom: 0px;
+}
