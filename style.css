@@ -1,11 +1,14 @@
+/* https: //imgur.com/a/3skxJPT 
+album with my Muerta screenshots/crops
+*/
 .bg-pfp {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.imgur.com/UbATCI6.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.66)), url('https://i.imgur.com/U83VG2i.png');
 }
 
 li {
     margin-bottom: 10px;
 }
-  
+
 li:last-child {
     margin-bottom: 0px;
 }
