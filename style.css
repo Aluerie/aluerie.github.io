@@ -1,8 +1,60 @@
-/* https: //imgur.com/a/3skxJPT 
-album with my Muerta screenshots/crops
-*/
-.bg-pfp {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.66)), url('https://i.imgur.com/U83VG2i.png');
+:root {
+    --accent: #6366f1;
+    --accent-light: #a5b4fc;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 6rem 1rem 2rem;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    line-height: 1.5;
+    color: #fff;
+    background-color: #0b0b2a;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+main {
+    text-align: center;
+}
+
+p,
+h1,
+ul {
+    margin: 0;
+}
+
+.greeting {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+h1 {
+    font-size: clamp(2.25rem, 9vw, 3.75rem);
+    font-weight: normal;
+    line-height: 1;
+}
+
+.handle {
+    margin-top: 0.5rem;
+    font-size: 1.125rem;
+    letter-spacing: 0.05em;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.5rem;
 }
 
 li {
@@ -10,5 +62,28 @@ li {
 }
 
 li:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
+}
+
+.link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 280px;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--accent-light);
+    border-radius: 0.25rem;
+    color: inherit;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.link-btn:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.link-btn:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 2px;
 }
