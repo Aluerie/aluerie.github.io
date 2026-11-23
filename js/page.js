@@ -1,3 +1,39 @@
+// The greeting is a random phrase for the visitor's time of day; "Hello there," in the HTML is the fallback.
+(() => {
+    const greeting = document.querySelector(".greeting");
+    if (!greeting) return;
+
+    const lateNight = [
+        "Can't sleep either?",
+        "Up late too?",
+        "Oh, you're still awake?",
+        "Shouldn't you be asleep?",
+        "Hi, fellow night owl,",
+    ];
+    const morning = [
+        "Good morning,",
+        "Morning, sleepyhead,",
+        "Rise and shine,",
+        "Coffee first, then hi,",
+    ];
+    const afternoon = [
+        "Hello there,",
+        "Hey you,",
+        "Oh, hi!",
+        "Welcome,",
+    ];
+    const evening = [
+        "Good evening,",
+        "Evening, stranger,",
+        "Cozy night, huh?",
+        "Hi, night person,",
+    ];
+
+    const hour = new Date().getHours();
+    const phrases = hour < 5 ? lateNight : hour < 12 ? morning : hour < 18 ? afternoon : evening;
+    greeting.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+})();
+
 // Clicking the @Aluerie handle copies it and briefly shows "copied 💜" in its place.
 (() => {
     const handle = document.querySelector(".handle");

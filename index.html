@@ -17,6 +17,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://aluerie.github.io/img/background.jpg">
     <meta name="theme-color" content="#6366f1">
+    <!-- Discord card shown when the link is posted in Discord.
+         Its buttons copy the link list in <main> below: when a link changes, update both.
+         Max 5 buttons per row; buttons only accept web links (no mailto:).
+         Test after pushing: wait ~10 min, then post https://aluerie.github.io/?v=<new number>. -->
     <script id="discord:component-embed" type="application/json">
       {
         "component": {
@@ -89,6 +93,8 @@
       <h1>I'm Irene Adler <span class="heart-egg">💜</span></h1>
       <button class="handle" type="button" title="Copy handle">@Aluerie</button>
       <span class="copied" role="status" aria-live="polite"></span>
+      <!-- These links are repeated in the Discord card JSON in <head>: when a link changes, update both.
+           A new button needs a brand-* class in css/style.css and, if it's a new logo, an icon <symbol> above. -->
       <ul>
         <li>
           <a class="link-btn brand-twitch" href="https://www.twitch.tv/irene_adler__">
