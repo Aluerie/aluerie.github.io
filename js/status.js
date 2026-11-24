@@ -9,6 +9,9 @@
     const DISCORD_INVITE = "K8FuDeP";
     const GITHUB = "Aluerie";
     const EMAIL = "aluerie@gmail.com";
+    // Read-only "now playing" link from spotify.aiden.tv (the same kind chatbots use for !song).
+    // It's public by design; if it ever needs replacing, generate a new one there.
+    const SPOTIFY_NOW_PLAYING = "https://spotify.aidenwallis.co.uk/u/65eb6afbe1ec4a6adb08b060";
 
     const HOVER_DELAY = 300; // so sweeping the mouse across the list doesn't fire every button
     const CACHE_FOR = 2 * 60 * 1000;
@@ -18,11 +21,11 @@
 
     const cache = new Map();
 
-    // Fetch once per CACHE_FOR (RETRY_AFTER if it failed); concurrent callers share the same request.
+    // Fetch once per `keep` ms (RETRY_AFTER if it failed); concurrent callers share the same request.
     // Resolves to null on any failure.
-    function cached(url, as = "json") {
+    function cached(url, as = "json", keep = CACHE_FOR) {
         const hit = cache.get(url);
-        if (hit && performance.now() - hit.time < (hit.failed ? RETRY_AFTER : CACHE_FOR)) return hit.promise;
+        if (hit && performance.now() - hit.time < (hit.failed ? RETRY_AFTER : keep)) return hit.promise;
         const entry = { time: performance.now(), failed: false };
         entry.promise = fetch(url, { signal: AbortSignal.timeout(4000) })
             .then((r) => (r.ok ? r[as]() : null))
@@ -167,9 +170,10 @@
     }
 
     async function spotify() {
-        const data = await lanyard();
-        if (data?.listening_to_spotify) {
-            return { title: "🎵 Listening right now", lines: [data.spotify.song, `by ${data.spotify.artist}`] };
+        // Songs change every few minutes, so this one is only cached briefly.
+        const playing = (await cached(SPOTIFY_NOW_PLAYING, "text", 20 * 1000))?.trim();
+        if (playing && !/no song|not playing|error|not found|invalid/i.test(playing)) {
+            return { title: "🎵 Listening right now", lines: [playing] };
         }
         return { title: "my playlist 🎵", lines: ["press play and stay a while"] };
     }

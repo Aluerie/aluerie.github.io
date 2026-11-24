@@ -13,7 +13,7 @@ It's a single static page (`index.html`, with styles in `css/`, scripts in `js/`
 - Click `@Aluerie` to copy the handle.
 - "it's 1:52 AM for me 🌙" in the bottom-left corner, in UTC.
 - The Twitch button glows and gets a LIVE badge while I'm streaming.
-- Hovering a link button shows a notification with live info (`js/status.js`): Twitch stream status via [DecAPI](https://decapi.me/), Discord server size via Discord's invite API, GitHub stats and latest activity, and Discord presence, Spotify and current game via [Lanyard](https://github.com/Phineas/lanyard). Each one falls back to plain text if its service doesn't answer.
+- Hovering a link button shows a notification with live info (`js/status.js`): Twitch stream status via [DecAPI](https://decapi.me/), Discord server size via Discord's invite API, GitHub stats and latest activity, the song I'm playing via [Now Playing for Spotify](https://spotify.aiden.tv/), and Discord presence and current game via [Lanyard](https://github.com/Phineas/lanyard). Each one falls back to plain text if its service doesn't answer.
 - A custom Discord card when the link is posted in Discord.
 - A handful of easter eggs (in `js/eggs.js` and `js/hearts.js`), and a catch-the-hearts mini-game on the 404 page (`js/catch.js`).
 
