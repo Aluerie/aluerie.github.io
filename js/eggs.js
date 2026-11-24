@@ -697,7 +697,7 @@
     window.addEventListener("resize", place);
 
     // Now and then the phone glows and shakes as if something came in, so people notice it can be clicked.
-    // Often for visitors who haven't found it yet, rarely for those who have (remembered per browser).
+    // Only for visitors who haven't found it yet (remembered per browser).
     const FOUND_KEY = "phone-found";
     let found = false;
     try {
@@ -707,18 +707,22 @@
     }
     const between = (min, max) => (min + Math.random() * (max - min)) * 1000;
 
+    // A few gentle buzzes per visit at most, and none once the phone has been clicked.
+    let buzzesLeft = 3;
     function buzz() {
+        if (found) return;
         if (!spot.hidden && document.visibilityState === "visible") {
             spot.classList.remove("buzz");
             void spot.offsetWidth; // restart the animation
             spot.classList.add("buzz");
+            buzzesLeft--;
         }
-        setTimeout(buzz, found ? between(180, 300) : between(45, 90));
+        if (buzzesLeft > 0) setTimeout(buzz, between(90, 150));
     }
     spot.addEventListener("animationend", (e) => {
         if (e.animationName === "phone-glow") spot.classList.remove("buzz");
     });
-    setTimeout(buzz, between(12, 18));
+    setTimeout(buzz, between(20, 30));
 
     spot.addEventListener("click", () => {
         if (!found) {

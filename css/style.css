@@ -372,25 +372,25 @@ button.link-btn {
         background: transparent;
         box-shadow: none;
     }
-    25%, 75% {
-        background: rgba(210, 220, 255, 0.12);
-        box-shadow: 0 0 32px 8px rgba(190, 200, 255, 0.55);
+    50% {
+        background: rgba(210, 220, 255, 0.06);
+        box-shadow: 0 0 24px 4px rgba(190, 200, 255, 0.3);
     }
 }
 
 @keyframes phone-shake {
-    0%, 70%, 100% { transform: rotate(0); }
-    10%, 30%, 50% { transform: rotate(-4deg); }
-    20%, 40%, 60% { transform: rotate(4deg); }
+    0%, 50%, 100% { transform: rotate(0); }
+    15%, 35% { transform: rotate(-1.5deg); }
+    25% { transform: rotate(1.5deg); }
 }
 
 .phone-spot.buzz {
-    animation: phone-glow 1.6s ease-in-out;
+    animation: phone-glow 2.4s ease-in-out;
 }
 
 @media (prefers-reduced-motion: no-preference) {
     .phone-spot.buzz {
-        animation: phone-glow 1.6s ease-in-out, phone-shake 0.9s ease-in-out;
+        animation: phone-glow 2.4s ease-in-out, phone-shake 0.8s ease-in-out;
     }
 }
 
