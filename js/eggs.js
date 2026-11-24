@@ -138,6 +138,7 @@
         "Stellar Blade": { emoji: "⚔️", color: "#0d1b2a" },
         "Dota 2": { emoji: "🛡️", color: "#a3221a" },
         AluBot: { emoji: "🤖", color: "#6366f1" },
+        Affirmations: { emoji: "✨", color: "#c4b5fd" },
     };
 
     function appIcon(app) {
@@ -482,6 +483,35 @@
         ["AluBot", "I've been running for 47 days straight. I need a vacation 🏝️"],
         ["AluBot", "reminder: Irene told me to tell you to drink water 💧"],
         ["AluBot", "beep boop. I love you 💜"],
+        // Motivational
+        ["Affirmations", "you're doing better than you think 💜"],
+        ["Affirmations", "small steps still count 🌱"],
+        ["Affirmations", "rest is productive too"],
+        ["Affirmations", "you've survived 100% of your bad days so far"],
+        ["Affirmations", "it's okay to start over. as many times as you need"],
+        ["Affirmations", "progress, not perfection ✨"],
+        ["Affirmations", "you don't have to have it all figured out"],
+        ["Affirmations", "be as kind to yourself as you are to your friends"],
+        ["Affirmations", "one thing at a time. you've got this"],
+        ["Affirmations", "your pace is the right pace 🐢"],
+        ["Affirmations", "the hard part is starting. you can do the hard part"],
+        ["Affirmations", "you are allowed to take up space"],
+        ["Affirmations", "today counts, even if all you did was get through it"],
+        ["Affirmations", "you're not behind. you're on your own path 🛤️"],
+        ["Affirmations", "drink some water, take a breath, try again 💧"],
+        ["Affirmations", "future you is going to be so proud"],
+        ["Affirmations", "you are more than your productivity"],
+        ["Affirmations", "it's a bad day, not a bad life"],
+        ["Affirmations", "the world is better with you in it 💜"],
+        ["Affirmations", "you've grown so much. look back sometime"],
+        ["Elden Ring", "every death is a lesson. the boss falls eventually 🗡️"],
+        ["Hollow Knight", "even the smallest knight can go far 🪲"],
+        ["Dota 2", "one lost game isn't the whole season 🛡️"],
+        ["GitHub", "every expert was once a beginner who kept committing"],
+        ["AluBot", "I believe in you. and I'm a bot, I don't lie 🤖"],
+        ["Cat", "purrs supportively 🐈"],
+        ["Universe", "you're exactly where you need to be right now 🌌"],
+        ["Hearts", "proud of you. just for existing 💜"],
     ];
 
     // Shuffled deck: every notification shows once, in random order, before any repeats.
