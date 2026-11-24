@@ -177,6 +177,7 @@ button.link-btn {
 
 /* Logo colour each button turns to on hover. */
 .brand-twitch { --brand: #a970ff; }
+.brand-youtube { --brand: #ff0033; }
 .brand-github { --brand: #ffffff; }
 .brand-discord { --brand: #5865f2; }
 .brand-spotify { --brand: #1ed760; }
@@ -222,6 +223,7 @@ button.link-btn {
     li:nth-child(5) { animation-delay: 480ms; }
     li:nth-child(6) { animation-delay: 540ms; }
     li:nth-child(7) { animation-delay: 600ms; }
+    li:nth-child(8) { animation-delay: 660ms; }
 }
 
 .link-btn:focus-visible {

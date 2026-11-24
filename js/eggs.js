@@ -83,7 +83,7 @@
         Steam: { symbol: "i-steam", emoji: "🎮", color: "#1b2838" },
         Email: { symbol: "i-envelope", emoji: "✉️", color: "#ea4335" },
         Messages: { emoji: "💬", color: "#34c759" },
-        YouTube: { emoji: "▶️", color: "#ff0000" },
+        YouTube: { symbol: "i-youtube", emoji: "▶️", color: "#ff0000" },
         Duolingo: { emoji: "🦉", color: "#58cc02" },
         Delivery: { emoji: "🛵", color: "#ff9500" },
         Bank: { emoji: "💳", color: "#0a84ff" },
