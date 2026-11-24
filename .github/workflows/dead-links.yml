@@ -20,11 +20,12 @@ jobs:
         id: lychee
         uses: lycheeverse/lychee-action@v2
         with:
-          # x.com blocks automated requests, so it would always look broken.
+          # x.com and reddit.com block automated requests, so they would always look broken.
           args: >-
             --no-progress
             --root-dir ${{ github.workspace }}
             --exclude "^https://(x|twitter)\.com"
+            --exclude "^https://(www\.)?reddit\.com"
             --accept 200,206,429
             index.html 404.html README.md
           fail: false
