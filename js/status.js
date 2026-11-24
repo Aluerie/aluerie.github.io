@@ -6,6 +6,7 @@
 
     const TWITCH = "irene_adler__";
     const YOUTUBE = "@Aluerie";
+    const BLUESKY = "aluerie.bsky.social";
     const DISCORD_ID = "312204139751014400";
     const DISCORD_INVITE = "K8FuDeP";
     const GITHUB = "Aluerie";
@@ -224,6 +225,28 @@
         };
     }
 
+    async function bluesky() {
+        const api = "https://public.api.bsky.app/xrpc";
+        const [profile, feed] = await Promise.all([
+            cached(`${api}/app.bsky.actor.getProfile?actor=${BLUESKY}`),
+            cached(`${api}/app.bsky.feed.getAuthorFeed?actor=${BLUESKY}&limit=1&filter=posts_no_replies`),
+        ]);
+        if (!profile) return { title: `@${BLUESKY}` };
+
+        const post = feed?.feed?.[0]?.post;
+        if (!profile.postsCount || !post) {
+            return { title: "just moved in 🦋", lines: [`@${BLUESKY}`], image: profile.avatar };
+        }
+        // Long posts are cut to keep the notification small.
+        const text = post.record?.text?.trim() ?? "";
+        const short = text.length > 90 ? `${text.slice(0, 89)}…` : text;
+        return {
+            title: `${plural(profile.followersCount ?? 0, "follower")} · ${plural(profile.postsCount, "post")}`,
+            lines: [short && `“${short}”`, `posted ${ago(post.record?.createdAt ?? post.indexedAt)}`],
+            image: profile.avatar,
+        };
+    }
+
     async function email() {
         return { title: EMAIL, lines: ["click to write to me ✉️"] };
     }
@@ -262,6 +285,7 @@
         }
         if (link.classList.contains("brand-spotify")) return ["spotify", "Spotify", spotify];
         if (link.classList.contains("brand-steam")) return ["steam", "Steam", steam];
+        if (link.classList.contains("brand-bluesky")) return ["bluesky", "Bluesky", bluesky];
         if (link.classList.contains("brand-email")) return ["email", "Email", email];
         return null;
     }
