@@ -12,6 +12,7 @@ It's a single static page (`index.html`, with styles in `css/`, scripts in `js/`
 - Floating hearts on click, hold and mouse move (off when the system asks for reduced motion).
 - Click `@Aluerie` to copy the handle.
 - A custom Discord card when the link is posted in Discord.
+- A handful of easter eggs (in `js/eggs.js` and `js/hearts.js`), and a catch-the-hearts mini-game on the 404 page (`js/catch.js`).
 
 ## 🔗 Adding or changing a link
 

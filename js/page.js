@@ -66,19 +66,37 @@
 })();
 
 // Clicking the @Aluerie handle copies it and briefly shows "copied 💜" in its place.
+// Easter egg: clicking it again and again gets more and more exasperated replies.
 (() => {
     const handle = document.querySelector(".handle");
     const status = document.querySelector(".copied");
     if (!handle || !status) return;
 
+    const replies = [
+        "copied 💜",
+        "copied again 💜",
+        "yes, it's copied",
+        "still copied, promise",
+        "it's in your clipboard!!",
+        "okay you REALLY like my name",
+        "I'm flattered 😳",
+        "fine. copied 💜",
+    ];
     const text = handle.textContent.trim();
     let resetTimer = 0;
+    let clicks = 0;
+    let lastClick = 0;
 
     handle.addEventListener("click", async () => {
+        // Count clicks in a row; a pause of a few seconds starts over.
+        const now = performance.now();
+        clicks = now - lastClick < 4000 ? clicks + 1 : 0;
+        lastClick = now;
+
         let message;
         try {
             await navigator.clipboard.writeText(text);
-            message = "copied 💜";
+            message = replies[Math.min(clicks, replies.length - 1)];
         } catch {
             message = "couldn't copy";
         }
