@@ -32,9 +32,9 @@ python .github/scripts/check_discord_card.py
 
 Another Action ([dead-links.yml](.github/workflows/dead-links.yml)) checks every link once a week, Discord invites included, and opens an issue if any are broken.
 
-## 📊 GitHub stats
+## 📊 Stats
 
-The GitHub hover notification shows commits this month and lines written per language this week. The public API doesn't give those, so [github-stats.yml](.github/workflows/github-stats.yml) runs [github_stats.py](.github/scripts/github_stats.py) every 6 hours and force-pushes the result as `github.json` to the `stats` branch, which the page reads from raw.githubusercontent.com.
+The GitHub hover notification shows commits this month and lines written per language this week, and the Spotify one shows my playlist with a random song from it when I'm not listening to anything. Neither is available to the page directly, so [github-stats.yml](.github/workflows/github-stats.yml) runs [github_stats.py](.github/scripts/github_stats.py) and [spotify_playlist.py](.github/scripts/spotify_playlist.py) every 6 hours and force-pushes the results as `github.json` and `playlist.json` to the `stats` branch, which the page reads from raw.githubusercontent.com. The playlist comes from Spotify's public embed page, so it needs no API key, but it only lists the first 100 songs.
 
 To test the Discord card after pushing, wait about 10 minutes, then post `https://aluerie.github.io/?v=<new number>` so Discord fetches it fresh.
 

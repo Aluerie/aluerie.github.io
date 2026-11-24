@@ -138,6 +138,7 @@
 
     // Commit counts and lines per language, collected every few hours by the github-stats workflow.
     const GITHUB_STATS = `https://raw.githubusercontent.com/${GITHUB}/aluerie.github.io/stats/github.json`;
+    const PLAYLIST_STATS = `https://raw.githubusercontent.com/${GITHUB}/aluerie.github.io/stats/playlist.json`;
 
     async function github() {
         const [stats, events] = await Promise.all([
@@ -181,7 +182,21 @@
                 image: playing.albumCover,
             };
         }
-        return { title: "my playlist 🎵", lines: ["press play and stay a while"] };
+
+        // Not listening: show the playlist itself (collected by the stats workflow) with a random song from it.
+        const playlist = await cached(PLAYLIST_STATS);
+        if (!playlist?.tracks?.length) return { title: "my playlist 🎵", lines: ["press play and stay a while"] };
+        const hours = Math.floor(playlist.duration_ms / 3600000);
+        const plus = playlist.more ? "+" : "";
+        const pick = playlist.tracks[Math.floor(Math.random() * playlist.tracks.length)];
+        return {
+            title: playlist.name,
+            lines: [
+                `${playlist.songs}${plus} songs · ${hours ? `${hours}${plus} hours` : "under an hour"}`,
+                `try: ${pick.title} by ${pick.artist}`,
+            ],
+            image: playlist.cover,
+        };
     }
 
     async function steam() {
