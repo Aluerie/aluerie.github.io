@@ -136,7 +136,7 @@
         return box;
     }
 
-    function fill(el, { app, time, title, lines = [], image }) {
+    function fill(el, { app, time, title, lines = [], image, wideImage }) {
         el.replaceChildren();
         const add = (parent, className, text) => {
             const row = document.createElement("div");
@@ -169,7 +169,7 @@
             const row = document.createElement("div");
             row.className = "toast-media";
             const img = document.createElement("img");
-            img.className = "toast-image";
+            img.className = wideImage ? "toast-image wide" : "toast-image";
             img.src = image;
             img.alt = "";
             // Some image hosts are blocked on some networks: drop the picture rather than leave a blank gap.

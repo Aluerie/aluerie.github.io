@@ -5,6 +5,7 @@
     if (!window.showToast) return;
 
     const TWITCH = "irene_adler__";
+    const YOUTUBE = "@Aluerie";
     const DISCORD_ID = "312204139751014400";
     const DISCORD_INVITE = "K8FuDeP";
     const GITHUB = "Aluerie";
@@ -208,6 +209,21 @@
         return { title: "see what I've been playing 🎮" };
     }
 
+    async function youtube() {
+        // DecAPI only fills in {id}, {title} and {url}; the id goes first since it never contains a "|".
+        const params = new URLSearchParams({ user: YOUTUBE, format: "{id}|{title}" });
+        const answer = (await cached(`https://decapi.me/youtube/latest_video?${params}`, "text"))?.trim();
+        const split = answer?.indexOf("|") ?? -1;
+        if (split < 1) return { title: "come watch something 📺" };
+        const id = answer.slice(0, split);
+        return {
+            title: "📺 Latest video",
+            lines: [answer.slice(split + 1)],
+            image: `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`,
+            wideImage: true,
+        };
+    }
+
     async function email() {
         return { title: EMAIL, lines: ["click to write to me ✉️"] };
     }
@@ -237,6 +253,7 @@
     function sourceFor(link) {
         const href = link.getAttribute("href") ?? "";
         if (link.classList.contains("brand-twitch")) return ["twitch", "Twitch", twitch];
+        if (link.classList.contains("brand-youtube")) return ["youtube", "YouTube", youtube];
         if (link.classList.contains("brand-github")) return ["github", "GitHub", github];
         if (link.classList.contains("brand-discord")) {
             return href.includes("discord.gg")

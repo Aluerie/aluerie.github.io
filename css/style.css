@@ -11,7 +11,8 @@
 
 body {
     margin: 0;
-    padding: 6rem 1rem 2rem;
+    /* Extra room at the bottom so the last button scrolls clear of the fixed clock / song / credit lines. */
+    padding: 6rem 1rem 5rem;
     font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     line-height: 1.5;
     color: #fff;
@@ -224,6 +225,9 @@ button.link-btn {
     li:nth-child(6) { animation-delay: 540ms; }
     li:nth-child(7) { animation-delay: 600ms; }
     li:nth-child(8) { animation-delay: 660ms; }
+    li:nth-child(9) { animation-delay: 720ms; }
+    li:nth-child(10) { animation-delay: 780ms; }
+    li:nth-child(11) { animation-delay: 840ms; }
 }
 
 .link-btn:focus-visible {
@@ -341,6 +345,12 @@ button.link-btn {
     border-radius: 0.375rem;
     object-fit: cover;
     transition: opacity 0.3s;
+}
+
+/* 16:9, for video thumbnails. */
+.toast-image.wide {
+    width: 6rem;
+    height: 3.375rem;
 }
 
 /* Cards behind the front one hide their picture like they hide their text. */
