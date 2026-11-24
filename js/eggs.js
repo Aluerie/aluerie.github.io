@@ -532,12 +532,16 @@
         ["Cat", "purrs supportively 🐈"],
         ["Universe", "you're exactly where you need to be right now 🌌"],
         ["Hearts", "proud of you. just for existing 💜"],
-        // Carrie
+        // Carrie (the 2026 series)
+        ["Carrie", "new episode available 📺 (watch with the lights on)"],
         ["Carrie", "prom tickets are on sale 🎟️ (maybe skip this one)"],
         ["Carrie", "reminder: never pour anything on anyone. ever."],
         ["Carrie", "they're all gonna laugh at you (they're not) 💜"],
         ["Carrie", "the gym is on fire. not metaphorically 🔥"],
         ["Carrie", "telekinesis update available. please use responsibly"],
+        ["Carrie", "a character is about to deliver a 6-minute monologue. get comfy 🕯️"],
+        ["Carrie", "you binged the whole season in one night. no regrets"],
+        ["Carrie", "Stephen King cameo spotted? 👀"],
         // Lord of the Rings
         ["Lord of the Rings", "one does not simply go to bed at a normal hour"],
         ["Lord of the Rings", "second breakfast is ready 🍳"],
