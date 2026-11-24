@@ -142,19 +142,70 @@
     const PHONE = { left: 1680, top: 280, right: 1965, bottom: 695 };
 
     const notifications = [
+        // Messages
         ["Messages", "go to sleep 💜"],
         ["Messages", "are you still awake??"],
         ["Messages", "Irene: stop poking my phone 😤"],
+        ["Messages", "mom: did you eat today?"],
+        ["Messages", "unknown number: hey it's me"],
+        ["Messages", "you: (draft) ok but hear me out"],
+        ["Messages", "someone is typing…"],
+        ["Messages", "seen 3h ago 👀"],
+        ["Messages", "voice message (4:37) 🎤"],
+        ["Messages", "📎 meme.jpg"],
+        // Apps
         ["Discord", "you have 99+ unread messages"],
+        ["Discord", "@everyone movie night in 5 🍿"],
+        ["Discord", "someone pinged you in #general"],
         ["Twitch", "irene_adler__ is live! (maybe)"],
+        ["Twitch", "your favourite streamer is online 👀"],
         ["Spotify", "your playlist misses you 🎵"],
+        ["Spotify", "Discover Weekly is ready, and it's sad again"],
         ["Steam", "your friend is now playing Dota 2"],
+        ["Steam", "a game on your wishlist is 90% off 🎮"],
+        ["Steam", "you have 47 unplayed games. just saying"],
+        ["GitHub", "✅ all checks passed (finally)"],
+        ["GitHub", "❌ build failed on main"],
+        ["GitHub", "1 new pull request: 'fix typo'"],
+        ["YouTube", "your 3am rabbit hole continues"],
+        ["Duolingo", "🦉 these reminders don't seem to be working"],
+        ["Delivery", "your order is 2 minutes away 🛵"],
+        ["Bank", "spent: ¥0. proud of you 💸"],
+        // Phone itself
         ["Battery", "1% left. charge me 🔋"],
+        ["Battery", "100%! unplug me please"],
+        ["Storage", "almost full: 3,412 screenshots"],
+        ["Screen Time", "up 2 hours from last week 📈"],
+        ["Update", "restart to install iOS 47.1"],
+        ["Photos", "you have a new memory: 'a year ago'"],
+        ["Camera", "you opened me by accident again"],
+        // Life
         ["Reminder", "drink some water 💧"],
+        ["Reminder", "stretch your back, you're hunched"],
+        ["Reminder", "that thing you forgot. yes, that one"],
         ["Clock", "alarm in 4 hours ⏰"],
+        ["Clock", "snoozed 6 times"],
+        ["Calendar", "tomorrow: be a functional adult"],
         ["Weather", "it's dark outside. like, really dark 🌙"],
+        ["Weather", "rain at 3am. perfect for sleeping 🌧️"],
+        ["Health", "steps today: 47 🚶"],
+        ["Health", "sleep goal: missed again 😴"],
+        ["Moon", "full moon tonight 🌕"],
+        ["Cat", "meow (feed me) 🐈"],
     ];
-    let next = Math.floor(Math.random() * notifications.length);
+
+    // Shuffled deck: every notification shows once, in random order, before any repeats.
+    let deck = [];
+    function nextNotification() {
+        if (!deck.length) {
+            deck = [...notifications];
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+        return deck.pop();
+    }
 
     const spot = document.createElement("div");
     spot.className = "phone-spot";
@@ -181,8 +232,7 @@
     window.addEventListener("resize", place);
 
     spot.addEventListener("click", () => {
-        const [app, text] = notifications[next];
-        next = (next + 1) % notifications.length;
+        const [app, text] = nextNotification();
         window.showToast({ app: `${app} · now`, lines: [text] });
     });
 })();
