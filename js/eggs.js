@@ -100,6 +100,7 @@
         Health: { emoji: "❤️", color: "#ffffff" },
         Moon: { emoji: "🌙", color: "#2c2c54" },
         Cat: { emoji: "🐈", color: "#ffb340" },
+        Hearts: { emoji: "💜", color: "#f5d0fe" },
     };
 
     function appIcon(app) {

@@ -35,7 +35,7 @@
         ).onfinish = () => el.remove();
 
         heartCount++;
-        if (MILESTONES[heartCount]) window.showToast?.({ title: MILESTONES[heartCount] });
+        if (MILESTONES[heartCount]) window.showToast?.({ app: "Hearts", time: "now", title: MILESTONES[heartCount] });
     }
 
     const rand = (min, max) => min + Math.random() * (max - min);
