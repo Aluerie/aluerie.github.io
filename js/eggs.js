@@ -1,5 +1,8 @@
-// Pop-up notifications in the top-right corner, used by the easter eggs.
-// window.showToast(text, app) adds one for a few seconds; `app` adds a phone-style header line.
+// Pop-up notifications in the top-right corner.
+// window.showToast({ app, title, lines, key, duration }) adds one for a few seconds: `app` is a small header,
+// `title` a bold line and `lines` plain lines under it. Showing a toast with the `key` of one still on screen
+// updates that one in place and brings it to the front instead of adding another; pass `raise: false` to
+// leave it where it is, and `onlyIfShown: true` to do nothing when no toast with that key is on screen.
 // They pile up as a stack with the newest in front; hovering fans the stack out and pauses the timers,
 // and clicking one dismisses it.
 (() => {
@@ -69,24 +72,46 @@
         layout();
     });
 
-    window.showToast = (text, app) => {
+    function fill(el, { app, title, lines = [] }) {
+        el.replaceChildren();
+        const add = (className, text) => {
+            const row = document.createElement("div");
+            if (className) row.className = className;
+            row.textContent = text;
+            el.appendChild(row);
+        };
+        if (app) add("toast-app", app);
+        if (title) add("toast-title", title);
+        for (const line of lines) if (line) add("", line);
+    }
+
+    window.showToast = (options) => {
+        const duration = options.duration ?? SHOW_FOR;
+        const existing = options.key && toasts.find((t) => t.key === options.key);
+        if (!existing && options.onlyIfShown) return;
+        if (existing) {
+            fill(existing.el, options);
+            existing.el.style.height = "auto";
+            existing.naturalHeight = existing.el.offsetHeight;
+            clearTimeout(existing.timer);
+            if (options.raise !== false) toasts = [existing, ...toasts.filter((t) => t !== existing)];
+            if (!expanded) startTimer(existing, duration);
+            else existing.remaining = duration;
+            layout();
+            return;
+        }
+
         const el = document.createElement("div");
         el.className = "toast entering";
-        if (app) {
-            const header = document.createElement("div");
-            header.className = "toast-app";
-            header.textContent = `${app} · now`;
-            el.appendChild(header);
-        }
-        el.appendChild(document.createTextNode(text));
+        fill(el, options);
         stack.prepend(el);
 
-        const toast = { el, naturalHeight: el.offsetHeight };
+        const toast = { el, key: options.key, naturalHeight: el.offsetHeight };
         el.addEventListener("click", () => dismiss(toast));
         toasts.unshift(toast);
         for (const old of toasts.slice(MAX)) dismiss(old);
-        if (!expanded) startTimer(toast, SHOW_FOR);
-        else toast.remaining = SHOW_FOR;
+        if (!expanded) startTimer(toast, duration);
+        else toast.remaining = duration;
 
         layout();
         // Next frame, drop the off-screen start position so it slides in.
@@ -142,7 +167,7 @@
     spot.addEventListener("click", () => {
         const [app, text] = notifications[next];
         next = (next + 1) % notifications.length;
-        window.showToast(text, app);
+        window.showToast({ app: `${app} · now`, lines: [text] });
     });
 })();
 
@@ -151,7 +176,7 @@ console.log(
     "%c💜%c\nHello there, curious one!\n\n" +
         "%cSince you're here, a few secrets:\n" +
         "  • click the big 💜 five times quickly\n" +
-        "  • draw a circle with your mouse\n" +
+        "  • click @Aluerie a few times in a row\n" +
         "  • the phone in the picture works\n\n" +
         "Code: https://github.com/Aluerie/aluerie.github.io",
     "font-size: 64px; line-height: 1;",

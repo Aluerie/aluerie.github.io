@@ -72,16 +72,6 @@ h1 {
     outline-offset: 2px;
 }
 
-/* Announced to screen readers only. */
-.copied {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-}
-
 ul {
     list-style: none;
     padding: 0;
@@ -248,6 +238,10 @@ button.link-btn {
     font-size: 0.75rem;
     opacity: 0.7;
     transition: opacity 0.3s;
+}
+
+.toast-title {
+    font-weight: bold;
 }
 
 /* Invisible click target over the phone in the background art. */

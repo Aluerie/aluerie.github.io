@@ -1,5 +1,5 @@
 // Floating hearts: a small burst on click/tap and a sparse trail behind the mouse,
-// plus a few hidden extras (milestones, heart rain, circle rings).
+// plus a few hidden extras (milestones, heart rain).
 // Skipped entirely when the visitor's system asks for reduced motion.
 (() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -35,7 +35,7 @@
         ).onfinish = () => el.remove();
 
         heartCount++;
-        if (MILESTONES[heartCount]) window.showToast?.(MILESTONES[heartCount]);
+        if (MILESTONES[heartCount]) window.showToast?.({ title: MILESTONES[heartCount] });
     }
 
     const rand = (min, max) => min + Math.random() * (max - min);
@@ -166,52 +166,5 @@
             duration: 600,
             opacity: 0.6,
         });
-    });
-
-    // Easter egg: drawing a circle with the pointer leaves a ring of hearts that bursts outward.
-    let trail = [];
-    let ringCooldown = 0;
-
-    function heartRing(cx, cy, radius) {
-        const count = Math.round(Math.min(28, Math.max(12, radius / 5)));
-        for (let i = 0; i < count; i++) {
-            const angle = (i / count) * Math.PI * 2;
-            spawn(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius, {
-                size: rand(18, 24),
-                dx: Math.cos(angle) * 40,
-                dy: Math.sin(angle) * 40 - 20,
-                duration: 1100,
-                opacity: 1,
-            });
-        }
-    }
-
-    document.addEventListener("pointermove", (e) => {
-        const now = performance.now();
-        trail.push({ x: e.clientX, y: e.clientY, t: now });
-        trail = trail.filter((p) => now - p.t < 2000);
-        if (now < ringCooldown || trail.length < 12) return;
-
-        const cx = trail.reduce((sum, p) => sum + p.x, 0) / trail.length;
-        const cy = trail.reduce((sum, p) => sum + p.y, 0) / trail.length;
-        const radii = trail.map((p) => Math.hypot(p.x - cx, p.y - cy));
-        const radius = radii.reduce((a, b) => a + b, 0) / radii.length;
-        if (radius < 30 || radius > 350) return;
-        // Roughly round: no point strays too far from the average radius.
-        if (radii.some((r) => Math.abs(r - radius) > radius * 0.5)) return;
-
-        let swept = 0;
-        for (let i = 1; i < trail.length; i++) {
-            let step =
-                Math.atan2(trail[i].y - cy, trail[i].x - cx) - Math.atan2(trail[i - 1].y - cy, trail[i - 1].x - cx);
-            if (step > Math.PI) step -= Math.PI * 2;
-            if (step < -Math.PI) step += Math.PI * 2;
-            swept += step;
-        }
-        if (Math.abs(swept) < Math.PI * 1.9) return;
-
-        heartRing(cx, cy, radius);
-        trail = [];
-        ringCooldown = now + 800;
     });
 })();

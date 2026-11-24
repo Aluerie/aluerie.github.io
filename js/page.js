@@ -65,12 +65,11 @@
     greeting.textContent = phrases[Math.floor(Math.random() * phrases.length)];
 })();
 
-// Clicking the @Aluerie handle copies it and briefly shows "copied 💜" in its place.
+// Clicking the @Aluerie handle copies it and says so in a notification.
 // Easter egg: clicking it again and again gets more and more exasperated replies.
 (() => {
     const handle = document.querySelector(".handle");
-    const status = document.querySelector(".copied");
-    if (!handle || !status) return;
+    if (!handle) return;
 
     const replies = [
         "copied 💜",
@@ -83,7 +82,6 @@
         "fine. copied 💜",
     ];
     const text = handle.textContent.trim();
-    let resetTimer = 0;
     let clicks = 0;
     let lastClick = 0;
 
@@ -93,19 +91,16 @@
         clicks = now - lastClick < 4000 ? clicks + 1 : 0;
         lastClick = now;
 
-        let message;
         try {
             await navigator.clipboard.writeText(text);
-            message = replies[Math.min(clicks, replies.length - 1)];
+            window.showToast({
+                key: "copy",
+                title: replies[Math.min(clicks, replies.length - 1)],
+                lines: [`${text} is in your clipboard`],
+                duration: 2500,
+            });
         } catch {
-            message = "couldn't copy";
+            window.showToast({ key: "copy", title: "couldn't copy 😿", lines: [`it's ${text}, by the way`] });
         }
-        handle.textContent = message;
-        status.textContent = message;
-        clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-            handle.textContent = text;
-            status.textContent = "";
-        }, 1500);
     });
 })();
