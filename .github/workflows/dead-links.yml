@@ -1,0 +1,55 @@
+name: Check for dead links
+
+# Once a week, check every link on the site and in the README; open an issue if any are broken.
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # x.com blocks automated requests, so it would always look broken.
+          args: >-
+            --no-progress
+            --exclude-mail
+            --exclude "^https://(x|twitter)\.com"
+            --accept 200,206,429
+            index.html 404.html README.md
+          fail: false
+
+      # A dead Discord invite still loads a normal page, so ask Discord's API about each invite directly.
+      - name: Check Discord invites
+        id: discord
+        run: |
+          broken=""
+          for code in $(grep -oE 'discord\.gg/[A-Za-z0-9-]+' index.html | sort -u | cut -d/ -f2); do
+            status=$(curl -s -o /dev/null -w "%{http_code}" "https://discord.com/api/v10/invites/$code")
+            if [ "$status" = "404" ]; then
+              broken="$broken- https://discord.gg/$code (Discord says this invite is invalid or expired)"$'\n'
+            fi
+          done
+          if [ -n "$broken" ]; then
+            mkdir -p lychee
+            printf '\n## Discord invites\n\n%s' "$broken" >> lychee/out.md
+            echo "broken=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open an issue
+        if: steps.lychee.outputs.exit_code != 0 || steps.discord.outputs.broken == 'true'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 🔗 Broken links on the page
+          content-filepath: ./lychee/out.md
+          labels: broken-links

@@ -11,6 +11,8 @@ It's a single static page (`index.html`, with styles in `css/`, scripts in `js/`
 - A random greeting for the visitor's time of day.
 - Floating hearts on click, hold and mouse move (off when the system asks for reduced motion).
 - Click `@Aluerie` to copy the handle.
+- "it's 03:12 for me 🌙" under the handle, in UTC.
+- The Twitch button glows and gets a LIVE badge while I'm streaming.
 - Hovering a link button shows a notification with live info (`js/status.js`): Twitch stream status via [DecAPI](https://decapi.me/), Discord server size via Discord's invite API, GitHub stats and latest activity, and Discord presence, Spotify and current game via [Lanyard](https://github.com/Phineas/lanyard). Each one falls back to plain text if its service doesn't answer.
 - A custom Discord card when the link is posted in Discord.
 - A handful of easter eggs (in `js/eggs.js` and `js/hearts.js`), and a catch-the-hearts mini-game on the 404 page (`js/catch.js`).
@@ -27,6 +29,8 @@ A GitHub Action ([check_discord_card.py](.github/scripts/check_discord_card.py))
 ```sh
 python .github/scripts/check_discord_card.py
 ```
+
+Another Action ([dead-links.yml](.github/workflows/dead-links.yml)) checks every link once a week, Discord invites included, and opens an issue if any are broken.
 
 To test the Discord card after pushing, wait about 10 minutes, then post `https://aluerie.github.io/?v=<new number>` so Discord fetches it fresh.
 

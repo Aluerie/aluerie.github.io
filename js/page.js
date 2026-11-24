@@ -65,6 +65,56 @@
     greeting.textContent = phrases[Math.floor(Math.random() * phrases.length)];
 })();
 
+// "it's 03:12 for me 🌙" under the handle. Shows UTC on purpose, not my real time zone.
+(() => {
+    const line = document.querySelector(".my-time");
+    if (!line) return;
+
+    const format = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
+
+    function tick() {
+        const now = new Date();
+        const hour = now.getUTCHours();
+        const icon = hour < 5 ? "🌙" : hour < 8 ? "🌅" : hour < 18 ? "☀️" : hour < 21 ? "🌆" : "🌙";
+        line.textContent = `it's ${format.format(now)} for me ${icon}`;
+        line.hidden = false;
+    }
+    tick();
+    // Re-check at the start of every minute.
+    setTimeout(() => {
+        tick();
+        setInterval(tick, 60 * 1000);
+    }, (60 - new Date().getSeconds()) * 1000);
+})();
+
+// While I'm live on Twitch, the Twitch button glows and gets a LIVE badge. Checked on load and every few minutes.
+(() => {
+    const button = document.querySelector(".link-btn.brand-twitch");
+    if (!button) return;
+
+    const badge = document.createElement("span");
+    badge.className = "live-badge";
+    badge.textContent = "LIVE";
+
+    async function check() {
+        try {
+            const response = await fetch("https://decapi.me/twitch/uptime/irene_adler__", {
+                signal: AbortSignal.timeout(8000),
+            });
+            const text = response.ok ? await response.text() : "";
+            // Live streams answer with the uptime ("1 hour, 2 minutes"); anything else counts as offline.
+            const live = /\d/.test(text) && !/offline|error|not found|invalid/i.test(text);
+            button.classList.toggle("is-live", live);
+            if (live) button.appendChild(badge);
+            else badge.remove();
+        } catch {
+            // Network trouble: leave the button as it is.
+        }
+    }
+    check();
+    setInterval(check, 3 * 60 * 1000);
+})();
+
 // Clicking the @Aluerie handle copies it and says so in a notification.
 // Easter egg: clicking it again and again gets more and more exasperated replies.
 (() => {
