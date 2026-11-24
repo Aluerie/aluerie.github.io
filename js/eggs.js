@@ -91,6 +91,8 @@
             img.className = "toast-image";
             img.src = image;
             img.alt = "";
+            // Some image hosts are blocked on some networks: drop the picture rather than leave a blank gap.
+            img.addEventListener("error", () => img.remove());
             body = document.createElement("div");
             row.append(img, body);
             el.appendChild(row);
