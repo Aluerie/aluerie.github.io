@@ -36,7 +36,7 @@
             const angle = rand(0, Math.PI * 2);
             const distance = rand(80, 260);
             spawn(x, y, {
-                size: rand(16, 30),
+                size: rand(18, 32),
                 dx: Math.cos(angle) * distance,
                 dy: Math.sin(angle) * distance - 40,
                 duration: rand(900, 1600),
@@ -49,7 +49,7 @@
     document.addEventListener("pointerdown", (e) => {
         for (let i = 0; i < 5; i++) {
             spawn(e.clientX, e.clientY, {
-                size: rand(16, 24),
+                size: rand(18, 26),
                 dx: rand(-40, 40),
                 dy: rand(-90, -50),
                 duration: rand(700, 1000),
@@ -78,7 +78,7 @@
         holdDelay = setTimeout(() => {
             pourTimer = setInterval(() => {
                 spawn(pointerX, pointerY, {
-                    size: rand(14, 22),
+                    size: rand(16, 24),
                     dx: rand(-50, 50),
                     dy: rand(-110, -60),
                     duration: rand(800, 1200),
@@ -105,7 +105,7 @@
         lastY = e.clientY;
         lastTime = now;
         spawn(e.clientX, e.clientY, {
-            size: rand(12, 16),
+            size: rand(14, 18),
             dx: rand(-10, 10),
             dy: rand(-30, -15),
             duration: 600,
