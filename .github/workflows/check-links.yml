@@ -1,0 +1,24 @@
+name: Check Discord card
+
+on:
+  push:
+    paths:
+      - index.html
+      - .github/scripts/check_discord_card.py
+      - .github/workflows/check-links.yml
+  pull_request:
+    paths:
+      - index.html
+      - .github/scripts/check_discord_card.py
+      - .github/workflows/check-links.yml
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python .github/scripts/check_discord_card.py
