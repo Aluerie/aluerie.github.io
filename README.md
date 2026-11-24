@@ -32,6 +32,18 @@ python .github/scripts/check_discord_card.py
 
 Another Action ([dead-links.yml](.github/workflows/dead-links.yml)) checks every link once a week, Discord invites included, and opens an issue if any are broken.
 
+## 🖼️ Link preview image
+
+`img/og.jpg` is the 1200×630 picture shown when the link is shared on X, Telegram, WhatsApp and so on. It's rendered from [og-image.html](.github/og-image.html); after editing that, start a headless Edge (or Chrome) and render it again:
+
+```sh
+msedge --headless=new --remote-debugging-port=9333 about:blank
+```
+
+```sh
+node .github/scripts/render_og_image.mjs
+```
+
 ## 📊 Stats
 
 The GitHub hover notification shows commits this month and lines written per language this week, and the Spotify one shows my playlist with a random song from it when I'm not listening to anything. Neither is available to the page directly, so [github-stats.yml](.github/workflows/github-stats.yml) runs [github_stats.py](.github/scripts/github_stats.py) and [spotify_playlist.py](.github/scripts/spotify_playlist.py) every 6 hours and force-pushes the results as `github.json` and `playlist.json` to the `stats` branch, which the page reads from raw.githubusercontent.com. The playlist comes from Spotify's public embed page, so it needs no API key, but it only lists the first 100 songs.

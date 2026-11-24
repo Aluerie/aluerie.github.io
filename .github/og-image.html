@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- Source for img/og.jpg, the link preview image (1200×630). See the README for how to render it. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Link preview image</title>
+    <style>
+      html, body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        font-family: "Segoe UI", ui-sans-serif, system-ui, sans-serif, "Segoe UI Emoji";
+        color: #fff;
+        background: #0b0b2a url("../img/background.jpg") center / cover no-repeat;
+      }
+
+      /* Darken the left side, where the text goes, and fade into the art on the right. */
+      body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(5, 5, 25, 0.85) 0%, rgba(5, 5, 25, 0.6) 45%, rgba(5, 5, 25, 0.15) 75%);
+      }
+
+      .card {
+        position: absolute;
+        left: 80px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .hello {
+        margin: 0;
+        font-size: 34px;
+        opacity: 0.85;
+      }
+
+      h1 {
+        margin: 4px 0 0;
+        font-size: 92px;
+        font-weight: 400;
+        line-height: 1.05;
+        white-space: nowrap;
+      }
+
+      .handle {
+        margin: 14px 0 0;
+        font-size: 36px;
+        letter-spacing: 0.05em;
+        color: #a5b4fc;
+      }
+
+      .links {
+        display: flex;
+        gap: 14px;
+        margin-top: 44px;
+      }
+
+      .links span {
+        padding: 8px 18px;
+        border: 2px solid #a5b4fc;
+        border-radius: 6px;
+        background: rgba(5, 5, 25, 0.45);
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      /* Bottom left: the artist's signature is in the bottom-right corner. */
+      .url {
+        position: absolute;
+        left: 80px;
+        bottom: 28px;
+        font-size: 24px;
+        opacity: 0.75;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <p class="hello">Hello there,</p>
+      <h1>I'm Irene Adler 💜</h1>
+      <p class="handle">@Aluerie</p>
+      <div class="links">
+        <span>Twitch</span><span>GitHub</span><span>Discord</span><span>Spotify</span><span>Steam</span>
+      </div>
+    </div>
+    <div class="url">aluerie.github.io</div>
+  </body>
+</html>
