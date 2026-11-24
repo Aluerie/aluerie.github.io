@@ -11,7 +11,7 @@ It's a single static page (`index.html`, with styles in `css/`, scripts in `js/`
 - A random greeting for the visitor's time of day.
 - Floating hearts on click, hold and mouse move (off when the system asks for reduced motion).
 - Click `@Aluerie` to copy the handle.
-- "it's 03:12 for me 🌙" under the handle, in UTC.
+- "it's 1:52 AM for me 🌙" in the bottom-left corner, in UTC.
 - The Twitch button glows and gets a LIVE badge while I'm streaming.
 - Hovering a link button shows a notification with live info (`js/status.js`): Twitch stream status via [DecAPI](https://decapi.me/), Discord server size via Discord's invite API, GitHub stats and latest activity, and Discord presence, Spotify and current game via [Lanyard](https://github.com/Phineas/lanyard). Each one falls back to plain text if its service doesn't answer.
 - A custom Discord card when the link is posted in Discord.
@@ -31,6 +31,10 @@ python .github/scripts/check_discord_card.py
 ```
 
 Another Action ([dead-links.yml](.github/workflows/dead-links.yml)) checks every link once a week, Discord invites included, and opens an issue if any are broken.
+
+## 📊 GitHub stats
+
+The GitHub hover notification shows commits this month and lines written per language this week. The public API doesn't give those, so [github-stats.yml](.github/workflows/github-stats.yml) runs [github_stats.py](.github/scripts/github_stats.py) every 6 hours and force-pushes the result as `github.json` to the `stats` branch, which the page reads from raw.githubusercontent.com.
 
 To test the Discord card after pushing, wait about 10 minutes, then post `https://aluerie.github.io/?v=<new number>` so Discord fetches it fresh.
 

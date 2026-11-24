@@ -65,12 +65,17 @@
     greeting.textContent = phrases[Math.floor(Math.random() * phrases.length)];
 })();
 
-// "it's 03:12 for me 🌙" under the handle. Shows UTC on purpose, not my real time zone.
+// "it's 1:52 AM for me 🌙" in the bottom-left corner. Shows UTC on purpose, not my real time zone.
 (() => {
     const line = document.querySelector(".my-time");
     if (!line) return;
 
-    const format = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" });
+    const format = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC",
+    });
 
     function tick() {
         const now = new Date();

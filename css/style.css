@@ -72,11 +72,14 @@ h1 {
     outline-offset: 2px;
 }
 
-/* "it's 03:12 for me 🌙" under the handle. */
+/* "it's 1:52 AM for me 🌙" in the bottom-left corner, opposite the art credit. */
 .my-time {
-    margin-top: 0.25rem;
+    position: fixed;
+    left: 1rem;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    margin: 0;
     font-size: 0.875rem;
-    opacity: 0.75;
+    opacity: 0.7;
 }
 
 /* Twitch button while the stream is live: a pulsing glow and a LIVE badge. */
@@ -191,14 +194,12 @@ button.link-btn {
     .greeting,
     h1,
     .handle,
-    .my-time,
     li {
         animation: rise 0.5s ease-out both;
     }
 
     h1 { animation-delay: 80ms; }
     .handle { animation-delay: 160ms; }
-    .my-time { animation-delay: 200ms; }
     li:nth-child(1) { animation-delay: 240ms; }
     li:nth-child(2) { animation-delay: 300ms; }
     li:nth-child(3) { animation-delay: 360ms; }

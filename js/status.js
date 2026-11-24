@@ -133,12 +133,14 @@
         GollumEvent: "edited the wiki of",
     };
 
+    // Commit counts and lines per language, collected every few hours by the github-stats workflow.
+    const GITHUB_STATS = `https://raw.githubusercontent.com/${GITHUB}/aluerie.github.io/stats/github.json`;
+
     async function github() {
-        const [user, events] = await Promise.all([
-            cached(`https://api.github.com/users/${GITHUB}`),
+        const [stats, events] = await Promise.all([
+            cached(GITHUB_STATS),
             cached(`https://api.github.com/users/${GITHUB}/events/public?per_page=10`),
         ]);
-        if (!user) return { title: "mods, bots and little tools" };
 
         const latest = Array.isArray(events) ? events.find((e) => EVENTS[e.type]) : null;
         let activity = "";
@@ -149,9 +151,18 @@
                 latest.type === "CreateEvent" ? created[latest.payload.ref_type] ?? EVENTS.CreateEvent : EVENTS[latest.type];
             activity = `last ${verb} ${repo} · ${ago(latest.created_at)}`;
         }
+        if (!stats?.commits_month) return { title: "mods, bots and little tools", lines: [activity] };
+
+        // A different one of this week's top languages on each hover, for a bit of variety.
+        const languages = (stats.languages_week ?? []).slice(0, 3);
+        const language = languages[Math.floor(Math.random() * languages.length)];
+        const busiest = stats.top_repo_month?.name;
         return {
-            title: `${plural(user.public_repos, "public repo")} · ${plural(user.followers, "follower")}`,
-            lines: [activity],
+            title: `${plural(stats.commits_month, "commit")} this month${busiest ? ` · mostly ${busiest}` : ""}`,
+            lines: [
+                language && `wrote ${plural(language.lines, "line")} of ${language.name} this week`,
+                activity,
+            ],
         };
     }
 

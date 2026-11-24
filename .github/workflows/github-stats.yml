@@ -1,0 +1,40 @@
+name: Update GitHub stats
+
+# Every 6 hours, collect my recent GitHub activity into github.json on the `stats` branch,
+# which the page reads from raw.githubusercontent.com. The branch is overwritten each time,
+# so it never builds up history and main stays free of bot commits.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Collect stats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/stats"
+          python .github/scripts/github_stats.py "$RUNNER_TEMP/stats/github.json"
+          cat "$RUNNER_TEMP/stats/github.json"
+
+      - name: Publish to the stats branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ${{ runner.temp }}/stats
+        run: |
+          git init -q -b stats
+          git add github.json
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "📊 Update GitHub stats"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" stats
