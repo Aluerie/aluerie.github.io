@@ -169,7 +169,7 @@
         if (playing) {
             return { title: `🎮 Playing ${playing.name}`, lines: [playing.details, playing.state] };
         }
-        return { title: "add me and let's play something 🎮" };
+        return { title: "see what I've been playing 🎮" };
     }
 
     async function email() {
