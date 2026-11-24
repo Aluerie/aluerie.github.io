@@ -183,6 +183,7 @@ button.link-btn {
 .brand-steam { --brand: #66c0f4; }
 .brand-reddit { --brand: #ff4500; }
 .brand-x { --brand: #ffffff; }
+.brand-bluesky { --brand: #1185fe; }
 .brand-email { --brand: #ea4335; }
 
 /* Holds the icon shapes; never shown itself. */
