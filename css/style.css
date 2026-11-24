@@ -196,34 +196,58 @@ button.link-btn {
     line-height: 1;
 }
 
-/* Pop-up message used by the easter eggs. */
-.toast {
+/* Pop-up notifications used by the easter eggs: a stack in the top-right corner. */
+.toasts {
     position: fixed;
     top: calc(1rem + env(safe-area-inset-top, 0px));
-    left: 50%;
+    right: 1rem;
     z-index: 30;
-    max-width: min(22rem, calc(100vw - 2rem));
+    width: min(20rem, calc(100vw - 2rem));
+    transition: height 0.3s;
+}
+
+.toast {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    overflow: hidden;
     padding: 0.75rem 1rem;
     border: 1px solid rgba(165, 180, 252, 0.35);
     border-radius: 0.875rem;
-    background: rgba(17, 17, 48, 0.85);
+    background: rgba(17, 17, 48, 0.92);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-    pointer-events: none;
-    opacity: 0;
-    transform: translate(-50%, -1.5rem);
-    transition: opacity 0.3s, transform 0.3s;
+    cursor: pointer;
+    transform-origin: top center;
+    transition: transform 0.3s ease, opacity 0.3s, height 0.3s ease, color 0.3s;
 }
 
-.toast.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
+/* Cards behind the front one only show their edge, so hide their text. */
+.toast.behind {
+    color: transparent;
+}
+
+.toast.behind .toast-app {
+    opacity: 0;
+}
+
+.toast.entering {
+    opacity: 0 !important;
+    transform: translateX(110%) !important;
+}
+
+.toast.leaving {
+    opacity: 0 !important;
+    transform: translateX(110%) !important;
+    pointer-events: none;
 }
 
 .toast-app {
     font-size: 0.75rem;
     opacity: 0.7;
+    transition: opacity 0.3s;
 }
 
 /* Invisible click target over the phone in the background art. */
@@ -275,7 +299,9 @@ body.ouch {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .toasts,
     .toast,
+    .toast-app,
     .catch-heart {
         transition: none;
     }
