@@ -1,4 +1,4 @@
-# aluerie.github.io
+# 💜 aluerie.github.io
 
 My links page, live at <https://aluerie.github.io/>.
 
