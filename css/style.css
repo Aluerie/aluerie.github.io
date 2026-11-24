@@ -228,7 +228,7 @@ button.link-btn {
     top: calc(1rem + env(safe-area-inset-top, 0px));
     right: 1rem;
     z-index: 30;
-    width: min(20rem, calc(100vw - 2rem));
+    width: min(23rem, calc(100vw - 2rem));
     transition: height 0.3s;
 }
 

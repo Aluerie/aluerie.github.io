@@ -37,7 +37,7 @@
 
     const ago = (date) => {
         const seconds = (new Date(date) - Date.now()) / 1000;
-        const format = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+        const format = new Intl.RelativeTimeFormat("en", { numeric: "auto", style: "short" });
         for (const [unit, size] of [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]]) {
             if (Math.abs(seconds) >= size) return format.format(Math.round(seconds / size), unit);
         }
@@ -149,7 +149,7 @@
             const created = { repository: "created", branch: "created a branch in", tag: "tagged a release of" };
             const verb =
                 latest.type === "CreateEvent" ? created[latest.payload.ref_type] ?? EVENTS.CreateEvent : EVENTS[latest.type];
-            activity = `last ${verb} ${repo} · ${ago(latest.created_at)}`;
+            activity = `${verb} ${repo} · ${ago(latest.created_at)}`;
         }
         if (!stats?.commits_month) return { title: "mods, bots and little tools", lines: [activity] };
 
