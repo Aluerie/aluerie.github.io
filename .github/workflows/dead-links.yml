@@ -23,6 +23,7 @@ jobs:
           # x.com blocks automated requests, so it would always look broken.
           args: >-
             --no-progress
+            --root-dir ${{ github.workspace }}
             --exclude "^https://(x|twitter)\.com"
             --accept 200,206,429
             index.html 404.html README.md
