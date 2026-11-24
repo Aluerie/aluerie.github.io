@@ -44,6 +44,10 @@ msedge --headless=new --remote-debugging-port=9333 about:blank
 node .github/scripts/render_og_image.mjs
 ```
 
+## 😀 Discord card emojis
+
+The logos on the Discord card buttons are custom emojis uploaded to Discord from [img/emojis](img/emojis) (256×256 PNGs). The card refers to them by ID, as `"emoji": { "name": "twitch", "id": "…" }`, so a new logo has to be uploaded to Discord first.
+
 ## 📊 Stats
 
 The GitHub hover notification shows commits this month and lines written per language this week, and the Spotify one shows my playlist with a random song from it when I'm not listening to anything. Neither is available to the page directly, so [github-stats.yml](.github/workflows/github-stats.yml) runs [github_stats.py](.github/scripts/github_stats.py) and [spotify_playlist.py](.github/scripts/spotify_playlist.py) every 6 hours and force-pushes the results as `github.json` and `playlist.json` to the `stats` branch, which the page reads from raw.githubusercontent.com. The playlist comes from Spotify's public embed page, so it needs no API key, but it only lists the first 100 songs.
