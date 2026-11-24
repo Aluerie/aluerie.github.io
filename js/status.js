@@ -197,6 +197,26 @@
         return { title: EMAIL, lines: ["click to write to me ✉️"] };
     }
 
+    // ---- now playing in the bottom-left corner ----
+    // Shown above the clock while I'm listening to something, so visitors see it without hovering (phones too).
+    // Checked every 30 seconds, only while the tab is visible.
+    const nowPlaying = document.createElement("p");
+    nowPlaying.className = "now-playing";
+    nowPlaying.hidden = true;
+    document.body.appendChild(nowPlaying);
+
+    async function refreshNowPlaying() {
+        if (document.visibilityState !== "visible") return;
+        const playing = await cached(`${SPOTIFY_NOW_PLAYING}?json=true`, "json", 20 * 1000);
+        const artists = (playing?.artists ?? []).map((a) => a.name).join(", ");
+        nowPlaying.hidden = !playing?.title;
+        nowPlaying.textContent = playing?.title ? `🎵 ${playing.title}${artists ? ` · ${artists}` : ""}` : "";
+        nowPlaying.title = nowPlaying.textContent; // full text on hover when it's cut off
+    }
+    refreshNowPlaying();
+    setInterval(refreshNowPlaying, 30 * 1000);
+    document.addEventListener("visibilitychange", refreshNowPlaying);
+
     // ---- wiring ----
 
     function sourceFor(link) {

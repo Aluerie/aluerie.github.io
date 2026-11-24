@@ -82,6 +82,20 @@ h1 {
     opacity: 0.7;
 }
 
+/* "🎵 Небо · SadSvit" just above the clock while I'm listening to something. */
+.now-playing {
+    position: fixed;
+    left: 1rem;
+    bottom: calc(2.15rem + env(safe-area-inset-bottom, 0px));
+    max-width: calc(100vw - 2rem);
+    margin: 0;
+    overflow: hidden;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    opacity: 0.7;
+}
+
 /* Twitch button while the stream is live: a pulsing glow and a LIVE badge. */
 .link-btn.is-live {
     border-color: #a970ff;
