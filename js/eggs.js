@@ -1,6 +1,7 @@
 // Pop-up notifications in the top-right corner.
-// window.showToast({ app, title, lines, image, key, duration }) adds one for a few seconds: `app` is a small
-// header, `title` a bold line, `lines` plain lines under it and `image` a small picture beside them. Showing a toast with the `key` of one still on screen
+// window.showToast({ app, time, title, lines, image, key, duration }) adds one for a few seconds: `app` is a
+// small header with the app's icon (and `time`, e.g. "now", on the right), `title` a bold line, `lines` plain
+// lines under it and `image` a small picture beside them. Showing a toast with the `key` of one still on screen
 // updates that one in place and brings it to the front instead of adding another; pass `raise: false` to
 // leave it where it is, and `onlyIfShown: true` to do nothing when no toast with that key is on screen.
 // They pile up as a stack with the newest in front; hovering fans the stack out and pauses the timers,
@@ -72,7 +73,54 @@
         layout();
     });
 
-    function fill(el, { app, title, lines = [], image }) {
+    // App icons for the header, like on a phone: a brand logo from the page's SVG sprite when there is one
+    // (the 404 page has none, so it falls back to the emoji), otherwise an emoji on the app's colour.
+    const APP_ICONS = {
+        Twitch: { symbol: "i-twitch", emoji: "📺", color: "#9146ff" },
+        GitHub: { symbol: "i-github", emoji: "🐙", color: "#24292f" },
+        Discord: { symbol: "i-discord", emoji: "💬", color: "#5865f2" },
+        Spotify: { symbol: "i-spotify", emoji: "🎵", color: "#1db954" },
+        Steam: { symbol: "i-steam", emoji: "🎮", color: "#1b2838" },
+        Email: { symbol: "i-envelope", emoji: "✉️", color: "#ea4335" },
+        Messages: { emoji: "💬", color: "#34c759" },
+        YouTube: { emoji: "▶️", color: "#ff0000" },
+        Duolingo: { emoji: "🦉", color: "#58cc02" },
+        Delivery: { emoji: "🛵", color: "#ff9500" },
+        Bank: { emoji: "💳", color: "#0a84ff" },
+        Battery: { emoji: "🔋", color: "#30d158" },
+        Storage: { emoji: "☁️", color: "#8e8e93" },
+        "Screen Time": { emoji: "⏳", color: "#5e5ce6" },
+        Update: { emoji: "⚙️", color: "#636366" },
+        Photos: { emoji: "🌸", color: "#ff9f0a" },
+        Camera: { emoji: "📷", color: "#3a3a3c" },
+        Reminder: { emoji: "📝", color: "#ff9f0a" },
+        Clock: { emoji: "⏰", color: "#1c1c1e" },
+        Calendar: { emoji: "📅", color: "#ff3b30" },
+        Weather: { emoji: "🌤️", color: "#0a84ff" },
+        Health: { emoji: "❤️", color: "#ffffff" },
+        Moon: { emoji: "🌙", color: "#2c2c54" },
+        Cat: { emoji: "🐈", color: "#ffb340" },
+    };
+
+    function appIcon(app) {
+        const icon = APP_ICONS[app];
+        if (!icon) return null;
+        const box = document.createElement("span");
+        box.className = "toast-icon";
+        box.style.background = icon.color;
+        if (icon.symbol && document.getElementById(icon.symbol)) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+            use.setAttribute("href", `#${icon.symbol}`);
+            svg.appendChild(use);
+            box.appendChild(svg);
+        } else {
+            box.textContent = icon.emoji;
+        }
+        return box;
+    }
+
+    function fill(el, { app, time, title, lines = [], image }) {
         el.replaceChildren();
         const add = (parent, className, text) => {
             const row = document.createElement("div");
@@ -80,7 +128,24 @@
             row.textContent = text;
             parent.appendChild(row);
         };
-        if (app) add(el, "toast-app", app);
+        if (app) {
+            // Header: [icon] App name ........ now
+            const header = document.createElement("div");
+            header.className = "toast-app";
+            const icon = appIcon(app);
+            if (icon) header.appendChild(icon);
+            const name = document.createElement("span");
+            name.className = "toast-app-name";
+            name.textContent = app;
+            header.appendChild(name);
+            if (time) {
+                const when = document.createElement("span");
+                when.className = "toast-time";
+                when.textContent = time;
+                header.appendChild(when);
+            }
+            el.appendChild(header);
+        }
 
         // With an image, the text sits in a column beside it.
         let body = el;
@@ -233,7 +298,7 @@
 
     spot.addEventListener("click", () => {
         const [app, text] = nextNotification();
-        window.showToast({ app: `${app} · now`, lines: [text] });
+        window.showToast({ app, time: "now", lines: [text] });
     });
 })();
 

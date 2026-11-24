@@ -284,10 +284,41 @@ button.link-btn {
     pointer-events: none;
 }
 
+/* Header row, like a phone notification: [icon] App name ........ now */
 .toast-app {
-    font-size: 0.75rem;
-    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
     transition: opacity 0.3s;
+}
+
+.toast-app-name,
+.toast-time {
+    opacity: 0.7;
+}
+
+.toast-time {
+    margin-left: auto;
+}
+
+.toast-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.toast-icon svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    fill: #fff;
 }
 
 .toast-title {
