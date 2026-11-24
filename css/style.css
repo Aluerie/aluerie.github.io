@@ -366,6 +366,34 @@ button.link-btn {
     cursor: pointer;
 }
 
+/* "Incoming notification": the phone lights up, and shakes unless motion is reduced. */
+@keyframes phone-glow {
+    0%, 100% {
+        background: transparent;
+        box-shadow: none;
+    }
+    25%, 75% {
+        background: rgba(210, 220, 255, 0.12);
+        box-shadow: 0 0 32px 8px rgba(190, 200, 255, 0.55);
+    }
+}
+
+@keyframes phone-shake {
+    0%, 70%, 100% { transform: rotate(0); }
+    10%, 30%, 50% { transform: rotate(-4deg); }
+    20%, 40%, 60% { transform: rotate(4deg); }
+}
+
+.phone-spot.buzz {
+    animation: phone-glow 1.6s ease-in-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .phone-spot.buzz {
+        animation: phone-glow 1.6s ease-in-out, phone-shake 0.9s ease-in-out;
+    }
+}
+
 /* 404 mini-game. */
 .catch-heart {
     position: fixed;

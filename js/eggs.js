@@ -675,10 +675,13 @@
     document.body.appendChild(spot);
 
     // The background is fixed, centred and covers the viewport, so map the phone into viewport pixels.
+    // clientWidth/Height leave out the scrollbar, like the background does.
     function place() {
-        const scale = Math.max(window.innerWidth / IMAGE.width, window.innerHeight / IMAGE.height);
-        const offsetX = (window.innerWidth - IMAGE.width * scale) / 2;
-        const offsetY = (window.innerHeight - IMAGE.height * scale) / 2;
+        const viewWidth = document.documentElement.clientWidth;
+        const viewHeight = document.documentElement.clientHeight;
+        const scale = Math.max(viewWidth / IMAGE.width, viewHeight / IMAGE.height);
+        const offsetX = (viewWidth - IMAGE.width * scale) / 2;
+        const offsetY = (viewHeight - IMAGE.height * scale) / 2;
         const left = offsetX + PHONE.left * scale;
         const top = offsetY + PHONE.top * scale;
         const width = (PHONE.right - PHONE.left) * scale;
@@ -688,12 +691,44 @@
         spot.style.width = `${width}px`;
         spot.style.height = `${height}px`;
         // Hide it when the phone is cropped off screen (narrow or portrait windows).
-        spot.hidden = left + width / 2 > window.innerWidth || top + height / 2 > window.innerHeight;
+        spot.hidden = left + width / 2 > viewWidth || top + height / 2 > viewHeight;
     }
     place();
     window.addEventListener("resize", place);
 
+    // Now and then the phone glows and shakes as if something came in, so people notice it can be clicked.
+    // Often for visitors who haven't found it yet, rarely for those who have (remembered per browser).
+    const FOUND_KEY = "phone-found";
+    let found = false;
+    try {
+        found = localStorage.getItem(FOUND_KEY) === "1";
+    } catch {
+        // Storage blocked: treat as a first visit.
+    }
+    const between = (min, max) => (min + Math.random() * (max - min)) * 1000;
+
+    function buzz() {
+        if (!spot.hidden && document.visibilityState === "visible") {
+            spot.classList.remove("buzz");
+            void spot.offsetWidth; // restart the animation
+            spot.classList.add("buzz");
+        }
+        setTimeout(buzz, found ? between(180, 300) : between(45, 90));
+    }
+    spot.addEventListener("animationend", (e) => {
+        if (e.animationName === "phone-glow") spot.classList.remove("buzz");
+    });
+    setTimeout(buzz, between(12, 18));
+
     spot.addEventListener("click", () => {
+        if (!found) {
+            found = true;
+            try {
+                localStorage.setItem(FOUND_KEY, "1");
+            } catch {
+                // Not remembered then; it just keeps buzzing at the "not found yet" pace.
+            }
+        }
         const [app, text] = nextNotification();
         window.showToast({ app, time: "now", lines: [text] });
     });
