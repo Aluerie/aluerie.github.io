@@ -21,6 +21,7 @@
     <!-- Discord card shown when the link is posted in Discord.
          Its buttons copy the link list in <main> below: when a link changes, update both.
          Max 5 buttons per row; buttons only accept web links (no mailto:).
+         Button logos are custom emojis from img/emojis, given by "id" only: adding their "name" makes Discord drop the buttons.
          Test after pushing: wait ~10 min, then post https://aluerie.github.io/?v=<new number>. -->
     <script id="discord:component-embed" type="application/json">
       {
@@ -61,15 +62,15 @@
             {
               "type": 1,
               "components": [
-                { "type": 2, "style": 5, "label": "Spotify Playlist", "emoji": { "name": "🟢" }, "url": "https://open.spotify.com/playlist/7fVAcuDPLVAUL8555vy8Kz" },
-                { "type": 2, "style": 5, "label": "Steam", "emoji": { "name": "🔵" }, "url": "https://steamcommunity.com/id/dorothy_a/" },
-                { "type": 2, "style": 5, "label": "Reddit", "emoji": { "name": "🟠" }, "url": "https://www.reddit.com/u/Aluerie" },
-                { "type": 2, "style": 5, "label": "X", "emoji": { "name": "⚫" }, "url": "https://x.com/AluerieX" },
-                { "type": 2, "style": 5, "label": "Bluesky", "emoji": { "name": "🔵" }, "url": "https://bsky.app/profile/aluerie.bsky.social" }
+                { "type": 2, "style": 5, "label": "Spotify Playlist", "emoji": { "id": "1574793719075307520" }, "url": "https://open.spotify.com/playlist/7fVAcuDPLVAUL8555vy8Kz" },
+                { "type": 2, "style": 5, "label": "Steam", "emoji": { "id": "1574793738499137707" }, "url": "https://steamcommunity.com/id/dorothy_a/" },
+                { "type": 2, "style": 5, "label": "Reddit", "emoji": { "id": "1574793700326899804" }, "url": "https://www.reddit.com/u/Aluerie" },
+                { "type": 2, "style": 5, "label": "X", "emoji": { "id": "1574793774050181222" }, "url": "https://x.com/AluerieX" },
+                { "type": 2, "style": 5, "label": "Bluesky", "emoji": { "id": "1574793600871571606" }, "url": "https://bsky.app/profile/aluerie.bsky.social" }
               ]
             },
             { "type": 14, "divider": true, "spacing": 1 },
-            { "type": 10, "content": "-# <:twitch:1574793756203552848> <:github:1574793669519613992> ✉️ aluerie@gmail.com · Background art by [@Shrylia](https://x.com/shrylia)" }
+            { "type": 10, "content": "-# ✉️ aluerie@gmail.com · Background art by [@Shrylia](https://x.com/shrylia)" }
           ]
         }
       }

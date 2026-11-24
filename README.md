@@ -46,7 +46,7 @@ node .github/scripts/render_og_image.mjs
 
 ## 😀 Discord card emojis
 
-The logos on the Discord card buttons are custom emojis uploaded to Discord from [img/emojis](img/emojis) (256×256 PNGs). The card refers to them by ID, as `"emoji": { "name": "twitch", "id": "…" }`, so a new logo has to be uploaded to Discord first.
+The logos on the Discord card buttons are custom emojis uploaded to Discord from [img/emojis](img/emojis) (256×256 PNGs). The card refers to them by ID only, as `"emoji": { "id": "…" }`, so a new logo has to be uploaded to Discord first. Adding the emoji's `name` makes Discord drop the buttons altogether.
 
 ## 📊 Stats
 
