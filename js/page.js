@@ -100,6 +100,28 @@
     const badge = document.createElement("span");
     badge.className = "live-badge";
     badge.textContent = "LIVE";
+    let announced = false;
+
+    // A notification the first time the page sees me live, so phone visitors (no hover) find out too.
+    async function announce() {
+        announced = true;
+        let title = "";
+        try {
+            const response = await fetch("https://decapi.me/twitch/title/irene_adler__", {
+                signal: AbortSignal.timeout(5000),
+            });
+            if (response.ok) title = (await response.text()).trim();
+        } catch {
+            // No title then; the notification still works without it.
+        }
+        window.showToast?.({
+            key: "live",
+            app: "Twitch",
+            title: "🔴 I'm live right now!",
+            lines: [title, "come say hi 💜"],
+            duration: 8000,
+        });
+    }
 
     async function check() {
         try {
@@ -112,6 +134,7 @@
             button.classList.toggle("is-live", live);
             if (live) button.appendChild(badge);
             else badge.remove();
+            if (live && !announced) announce();
         } catch {
             // Network trouble: leave the button as it is.
         }

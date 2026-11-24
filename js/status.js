@@ -88,7 +88,7 @@
 
     async function discordDm() {
         const data = await lanyard();
-        if (!data) return { title: "add me: aluerie", lines: ["DMs are open 💜"] };
+        if (!data) return { title: "@aluerie on Discord", lines: ["the quickest way to reach me"] };
 
         const statuses = {
             online: "🟢 Online",
@@ -99,12 +99,12 @@
         const custom = data.activities.find((a) => a.type === 4);
         const playing = data.activities.find((a) => a.type === 0);
         return {
-            title: statuses[data.discord_status] ?? `add me: ${data.discord_user.username}`,
+            title: statuses[data.discord_status] ?? `@${data.discord_user.username} on Discord`,
             lines: [
                 custom && [custom.emoji?.name, custom.state].filter(Boolean).join(" "),
                 playing && `🎮 playing ${playing.name}`,
                 data.listening_to_spotify && `🎵 ${data.spotify.song} · ${data.spotify.artist}`,
-                `add me: ${data.discord_user.username}`,
+                `@${data.discord_user.username} on Discord`,
             ],
         };
     }
@@ -206,9 +206,39 @@
 
     const wait = (ms) => new Promise((resolve) => setTimeout(() => resolve("waiting"), ms));
 
+    // Hint for visitors who haven't found the hover notifications: once, 30 seconds in, mouse users only.
+    // Remembered per browser, and skipped for good as soon as they hover a button themselves.
+    const HINT_KEY = "hover-hint-done";
+    const remember = (key) => {
+        try {
+            localStorage.setItem(key, "1");
+        } catch {
+            // Storage blocked: the hint may show again on a later visit, which is fine.
+        }
+    };
+    const remembered = (key) => {
+        try {
+            return localStorage.getItem(key) === "1";
+        } catch {
+            return false;
+        }
+    };
+    let hovered = false;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !remembered(HINT_KEY)) {
+        setTimeout(() => {
+            if (hovered) return;
+            remember(HINT_KEY);
+            window.showToast({ app: "psst…", title: "hover the buttons 👀", lines: ["they know things about me"], duration: 7000 });
+        }, 30 * 1000);
+    }
+
     async function show(link) {
         const source = sourceFor(link);
         if (!source) return;
+        if (!hovered) {
+            hovered = true;
+            remember(HINT_KEY);
+        }
         const [key, app, load] = source;
         // Late results only refresh the toast if it's still on screen, and don't pull it to the front.
         let latest = null;
