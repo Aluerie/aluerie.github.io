@@ -280,6 +280,26 @@ button.link-btn {
     font-weight: bold;
 }
 
+.toast-media {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toast-image {
+    width: 3.5rem;
+    height: 3.5rem;
+    flex-shrink: 0;
+    border-radius: 0.375rem;
+    object-fit: cover;
+    transition: opacity 0.3s;
+}
+
+/* Cards behind the front one hide their picture like they hide their text. */
+.toast.behind .toast-image {
+    opacity: 0;
+}
+
 /* Invisible click target over the phone in the background art. */
 .phone-spot {
     position: fixed;

@@ -171,9 +171,15 @@
 
     async function spotify() {
         // Songs change every few minutes, so this one is only cached briefly.
-        const playing = (await cached(SPOTIFY_NOW_PLAYING, "text", 20 * 1000))?.trim();
-        if (playing && !/no song|not playing|error|not found|invalid/i.test(playing)) {
-            return { title: "🎵 Listening right now", lines: [playing] };
+        // Answers {title, artists: [{name}], albumCover} while playing, or {error} when not.
+        const playing = await cached(`${SPOTIFY_NOW_PLAYING}?json=true`, "json", 20 * 1000);
+        if (playing?.title) {
+            const artists = (playing.artists ?? []).map((a) => a.name).join(", ");
+            return {
+                title: "🎵 Listening right now",
+                lines: [playing.title, artists && `by ${artists}`],
+                image: playing.albumCover,
+            };
         }
         return { title: "my playlist 🎵", lines: ["press play and stay a while"] };
     }

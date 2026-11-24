@@ -1,6 +1,6 @@
 // Pop-up notifications in the top-right corner.
-// window.showToast({ app, title, lines, key, duration }) adds one for a few seconds: `app` is a small header,
-// `title` a bold line and `lines` plain lines under it. Showing a toast with the `key` of one still on screen
+// window.showToast({ app, title, lines, image, key, duration }) adds one for a few seconds: `app` is a small
+// header, `title` a bold line, `lines` plain lines under it and `image` a small picture beside them. Showing a toast with the `key` of one still on screen
 // updates that one in place and brings it to the front instead of adding another; pass `raise: false` to
 // leave it where it is, and `onlyIfShown: true` to do nothing when no toast with that key is on screen.
 // They pile up as a stack with the newest in front; hovering fans the stack out and pauses the timers,
@@ -72,17 +72,31 @@
         layout();
     });
 
-    function fill(el, { app, title, lines = [] }) {
+    function fill(el, { app, title, lines = [], image }) {
         el.replaceChildren();
-        const add = (className, text) => {
+        const add = (parent, className, text) => {
             const row = document.createElement("div");
             if (className) row.className = className;
             row.textContent = text;
-            el.appendChild(row);
+            parent.appendChild(row);
         };
-        if (app) add("toast-app", app);
-        if (title) add("toast-title", title);
-        for (const line of lines) if (line) add("", line);
+        if (app) add(el, "toast-app", app);
+
+        // With an image, the text sits in a column beside it.
+        let body = el;
+        if (image) {
+            const row = document.createElement("div");
+            row.className = "toast-media";
+            const img = document.createElement("img");
+            img.className = "toast-image";
+            img.src = image;
+            img.alt = "";
+            body = document.createElement("div");
+            row.append(img, body);
+            el.appendChild(row);
+        }
+        if (title) add(body, "toast-title", title);
+        for (const line of lines) if (line) add(body, "", line);
     }
 
     window.showToast = (options) => {
