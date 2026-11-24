@@ -732,6 +732,52 @@
         const [app, text] = nextNotification();
         window.showToast({ app, time: "now", lines: [text] });
     });
+
+    // Holding the mouse still over the phone for a few seconds: someone starts typing… and never sends it.
+    const endings = ["…never mind 🫣", "stopped typing", "deleted it 👀", "typing… (still)"];
+    let stillTimer;
+    let typing = false;
+
+    function startTyping() {
+        typing = true;
+        const show = (lines, extra = {}) =>
+            window.showToast({ key: "typing", app: "Messages", time: "now", title: "unknown number", lines, ...extra });
+        show(["typing"], { duration: 3000 });
+        let dots = 0;
+        const tick = setInterval(() => {
+            dots = (dots + 1) % 4;
+            show([`typing${".".repeat(dots)}`], { duration: 3000, raise: false, onlyIfShown: true });
+        }, 450);
+        setTimeout(() => {
+            clearInterval(tick);
+            show([endings[Math.floor(Math.random() * endings.length)]], { duration: 3500, raise: false, onlyIfShown: true });
+            typing = false;
+        }, 4500);
+    }
+
+    spot.addEventListener("pointermove", (e) => {
+        if (e.pointerType !== "mouse" || typing) return;
+        clearTimeout(stillTimer);
+        stillTimer = setTimeout(startTyping, 5000);
+    });
+    spot.addEventListener("pointerleave", () => clearTimeout(stillTimer));
+    spot.addEventListener("click", () => clearTimeout(stillTimer));
+})();
+
+// Easter egg: switching to another tab makes the tab title beg you to come back.
+(() => {
+    const original = document.title;
+    const missing = ["come back 🥺", "I miss you 💜", "psst… 👀", "don't leave me 😿", "hello?? 👋"];
+    let restore;
+    document.addEventListener("visibilitychange", () => {
+        clearTimeout(restore);
+        if (document.hidden) {
+            document.title = missing[Math.floor(Math.random() * missing.length)];
+        } else {
+            document.title = "you're back 💜";
+            restore = setTimeout(() => (document.title = original), 1500);
+        }
+    });
 })();
 
 // Easter egg: a hello for anyone who opens the browser console.
