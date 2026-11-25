@@ -243,6 +243,16 @@ button.link-btn {
     line-height: 1;
 }
 
+/* Read by screen readers, invisible on screen. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
 /* Pop-up notifications used by the easter eggs: a stack in the top-right corner. */
 .toasts {
     position: fixed;

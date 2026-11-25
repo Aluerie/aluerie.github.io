@@ -3,7 +3,8 @@
 // small header with the app's icon (and `time`, e.g. "now", on the right), `title` a bold line, `lines` plain
 // lines under it and `image` a small picture beside them. Showing a toast with the `key` of one still on screen
 // updates that one in place and brings it to the front instead of adding another; pass `raise: false` to
-// leave it where it is, and `onlyIfShown: true` to do nothing when no toast with that key is on screen.
+// leave it where it is, `onlyIfShown: true` to do nothing when no toast with that key is on screen, and
+// `quiet: true` to skip reading it out to screen readers (for rapid little updates).
 // They pile up as a stack with the newest in front; hovering fans the stack out and pauses the timers,
 // and clicking one dismisses it.
 (() => {
@@ -14,9 +15,20 @@
 
     const stack = document.createElement("div");
     stack.className = "toasts";
-    stack.setAttribute("role", "status");
-    stack.setAttribute("aria-live", "polite");
     document.body.appendChild(stack);
+
+    // Screen readers hear toasts through this hidden line rather than the stack itself,
+    // so quiet updates (like "typing…" dots) don't get read out over and over.
+    const announcer = document.createElement("div");
+    announcer.className = "visually-hidden";
+    announcer.setAttribute("role", "status");
+    announcer.setAttribute("aria-live", "polite");
+    document.body.appendChild(announcer);
+
+    function announce({ app, title, lines = [], quiet }) {
+        if (quiet) return;
+        announcer.textContent = [app, title, ...lines].filter(Boolean).join(". ");
+    }
 
     let toasts = []; // newest first
     let expanded = false;
@@ -59,7 +71,9 @@
         layout();
     }
 
-    stack.addEventListener("mouseenter", () => {
+    // Mouse only: on a phone a tap would also count as hovering, and the stack would stay open and paused.
+    stack.addEventListener("pointerenter", (e) => {
+        if (e.pointerType !== "mouse") return;
         expanded = true;
         for (const toast of toasts) {
             clearTimeout(toast.timer);
@@ -67,7 +81,8 @@
         }
         layout();
     });
-    stack.addEventListener("mouseleave", () => {
+    stack.addEventListener("pointerleave", (e) => {
+        if (e.pointerType !== "mouse" || !expanded) return;
         expanded = false;
         for (const toast of toasts) startTimer(toast, toast.remaining ?? SHOW_FOR);
         layout();
@@ -83,7 +98,7 @@
         Steam: { symbol: "i-steam", emoji: "🎮", color: "#1b2838" },
         Email: { symbol: "i-envelope", emoji: "✉️", color: "#ea4335" },
         Messages: { emoji: "💬", color: "#34c759" },
-        YouTube: { symbol: "i-youtube", emoji: "▶️", color: "#ff0000" },
+        YouTube: { symbol: "i-youtube", emoji: "▶️", color: "#ff0033" },
         Duolingo: { emoji: "🦉", color: "#58cc02" },
         Delivery: { emoji: "🛵", color: "#ff9500" },
         Bank: { emoji: "💳", color: "#0a84ff" },
@@ -229,6 +244,7 @@
         const duration = options.duration ?? SHOW_FOR;
         const existing = options.key && toasts.find((t) => t.key === options.key);
         if (!existing && options.onlyIfShown) return;
+        announce(options);
         if (existing) {
             fill(existing.el, options);
             existing.el.style.height = "auto";
@@ -730,7 +746,7 @@
             try {
                 localStorage.setItem(FOUND_KEY, "1");
             } catch {
-                // Not remembered then; it just keeps buzzing at the "not found yet" pace.
+                // Not remembered then; it stops buzzing for this visit and starts again on the next.
             }
         }
         const [app, text] = nextNotification();
@@ -750,7 +766,7 @@
         let dots = 0;
         const tick = setInterval(() => {
             dots = (dots + 1) % 4;
-            show([`typing${".".repeat(dots)}`], { duration: 3000, raise: false, onlyIfShown: true });
+            show([`typing${".".repeat(dots)}`], { duration: 3000, raise: false, onlyIfShown: true, quiet: true });
         }, 450);
         setTimeout(() => {
             clearInterval(tick);
