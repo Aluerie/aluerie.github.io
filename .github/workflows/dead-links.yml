@@ -47,10 +47,21 @@ jobs:
             echo "broken=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Open an issue
+      # While an earlier report is still open, update it instead of opening a new one every week.
+      - name: Find an open report
+        id: existing
+        if: steps.lychee.outputs.exit_code != 0 || steps.discord.outputs.broken == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --repo "${{ github.repository }}" --label broken-links --state open --json number --jq '.[0].number // empty')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the issue
         if: steps.lychee.outputs.exit_code != 0 || steps.discord.outputs.broken == 'true'
         uses: peter-evans/create-issue-from-file@v5
         with:
           title: 🔗 Broken links on the page
           content-filepath: ./lychee/out.md
           labels: broken-links
+          issue-number: ${{ steps.existing.outputs.number }}

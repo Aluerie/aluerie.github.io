@@ -29,11 +29,18 @@ jobs:
           cat "$RUNNER_TEMP/stats/github.json"
 
       # Scrapes Spotify's public embed page, which could change any day: don't let that break the GitHub stats.
+      # If it fails, keep the playlist.json from the last run, since the branch is rebuilt from scratch.
       - name: Collect Spotify playlist
         continue-on-error: true
         run: |
-          python .github/scripts/spotify_playlist.py "$RUNNER_TEMP/stats/playlist.json"
-          head -c 400 "$RUNNER_TEMP/stats/playlist.json"
+          out="$RUNNER_TEMP/stats/playlist.json"
+          if ! python .github/scripts/spotify_playlist.py "$out"; then
+            echo "::warning::Couldn't read the Spotify playlist; keeping the previous one"
+            git fetch -q --depth=1 origin stats
+            git show FETCH_HEAD:playlist.json > "$RUNNER_TEMP/playlist.previous.json"
+            mv "$RUNNER_TEMP/playlist.previous.json" "$out"
+          fi
+          head -c 400 "$out"
 
       - name: Publish to the stats branch
         env:

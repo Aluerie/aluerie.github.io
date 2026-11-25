@@ -5,12 +5,12 @@ on:
     paths:
       - index.html
       - .github/scripts/check_discord_card.py
-      - .github/workflows/check-links.yml
+      - .github/workflows/check-discord-card.yml
   pull_request:
     paths:
       - index.html
       - .github/scripts/check_discord_card.py
-      - .github/workflows/check-links.yml
+      - .github/workflows/check-discord-card.yml
   workflow_dispatch:
 
 jobs:
