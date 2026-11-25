@@ -97,6 +97,7 @@
     const button = document.querySelector(".link-btn.brand-twitch");
     if (!button) return;
 
+    const TWITCH = "irene_adler__";
     const badge = document.createElement("span");
     badge.className = "live-badge";
     badge.textContent = "LIVE";
@@ -107,7 +108,7 @@
         announced = true;
         let title = "";
         try {
-            const response = await fetch("https://decapi.me/twitch/title/irene_adler__", {
+            const response = await fetch(`https://decapi.me/twitch/title/${TWITCH}`, {
                 signal: AbortSignal.timeout(5000),
             });
             if (response.ok) title = (await response.text()).trim();
@@ -125,7 +126,7 @@
 
     async function check() {
         try {
-            const response = await fetch("https://decapi.me/twitch/uptime/irene_adler__", {
+            const response = await fetch(`https://decapi.me/twitch/uptime/${TWITCH}`, {
                 signal: AbortSignal.timeout(8000),
             });
             const text = response.ok ? await response.text() : "";

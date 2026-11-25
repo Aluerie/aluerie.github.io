@@ -66,9 +66,11 @@
         const get = (what) => cached(`${base}/${what}/${TWITCH}`, "text");
         const clean = (s) => (s && !/error|not found|invalid|offline/i.test(s) ? s.trim() : "");
 
+        // Live streams answer with the uptime ("1 hour, 2 minutes"), offline ones with "… is offline".
+        // Anything else is an error message, so it says nothing either way.
         const uptime = await get("uptime");
-        if (!uptime) return { title: "come say hi on stream 💜" };
-        const live = !/offline/i.test(uptime);
+        const live = /\d/.test(uptime ?? "") && !/offline|error|not found|invalid/i.test(uptime);
+        if (!live && !/is offline/i.test(uptime ?? "")) return { title: "come say hi on stream 💜" };
 
         // The essentials first, then each extra detail as soon as it comes in.
         const details = { title: "", game: "", followers: 0 };
@@ -333,7 +335,10 @@
             window.showToast({ key, app, ...toast, duration: 5000, raise: false, onlyIfShown: true });
         };
 
-        const loading = load(update);
+        // A source that throws (an API changed shape, say) gets a plain line rather than a stuck "checking…".
+        const loading = Promise.resolve()
+            .then(() => load(update))
+            .catch(() => ({ title: "couldn't check right now 😿" }));
         const quick = await Promise.race([loading, wait(150)]);
         if (quick !== "waiting") {
             // Cached details may already have come in through `update` before the first toast was shown.
